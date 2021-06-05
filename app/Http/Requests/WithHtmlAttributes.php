@@ -5,6 +5,11 @@ namespace App\Http\Requests;
 
 trait WithHtmlAttributes
 {
+    /**
+     * Array of laravel rules
+     */
+    protected $rules;
+    
     public function htmlAttributes()
     {
         return (object) $this->formatRules()->toArray();
@@ -13,8 +18,8 @@ trait WithHtmlAttributes
     public function formatRules()
     {
         $htmlAttributes = collect($this->rules())->map(function ($field) {
-            $rules = explode('|', $field);
-
+            $this->rules = explode('|', $field);
+            
             return array_map(function ($rule) {
                 $ruleArray = explode(':', $rule);
 
@@ -22,15 +27,15 @@ trait WithHtmlAttributes
                 $ruleValue = array_key_exists(1, $ruleArray) ? $ruleArray[1] : null;
 
                 if (method_exists($this, $ruleName)) {
-                    return $this->$ruleName($ruleValue);
+                    return $ruleValue? $this->$ruleName($ruleValue) : $this->$ruleName();
                 }
-            }, $rules);
+            }, $this->rules);
         });
 
         return $htmlAttributes;
     }
 
-    public function required($param)
+    public function required()
     {
         $param = "required";
 
@@ -39,6 +44,56 @@ trait WithHtmlAttributes
 
     public function min($param)
     {
+        if (array_intersect(['string', 'email', 'url'], $this->rules)) {
+            return "minlength={$param}";
+        }
+        
         return "min={$param}";
     }
+    
+    public function max($param)
+    {
+        if (array_intersect(['string', 'email', 'url'], $this->rules)) {
+            return "maxlength={$param}";
+        }
+        
+        return "max={$param}";
+    }
+    
+    public function date()
+    {
+        return "type=date";
+    }
+    
+    public function string()
+    {
+        return "type=string";
+    }
+    
+    public function numeric()
+    {
+        return "type=number";
+    }
+    
+    public function email()
+    {
+        return "type=email";
+    }
+    
+    // TODO:: Fix this
+    // public function file()
+    // {
+    //     return "type=file";
+    // }
+    
+    public function password()
+    {
+        return "type=password";
+    }
+    
+    public function url()
+    {
+        return "type=url";
+    }
 }
+
