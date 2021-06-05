@@ -26,7 +26,7 @@ class CustomFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:2|string',
+            'first_name' => 'required|min:2|string',
         ];
     }
 }

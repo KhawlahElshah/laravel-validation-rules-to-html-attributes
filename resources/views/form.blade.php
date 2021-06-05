@@ -25,7 +25,7 @@
                             First name
                         </label>
                         <div class="mt-1">
-                            <input name="first_name" id="first_name" autocomplete="given-name" {{ implode(' ', $attributes->name) }}
+                            <input name="first_name" id="first_name" autocomplete="given-name" {{ implode(' ', $attributes->first_name) }}
                                 class="shadow-sm border h-8 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                         </div>
                     </div>
