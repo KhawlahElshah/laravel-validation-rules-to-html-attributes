@@ -12,7 +12,11 @@ trait WithHtmlAttributes
     
     public function htmlAttributes()
     {
-        return (object) $this->formatRules()->toArray();
+        $attributes = array_map(function($fieldAttributes){
+            return implode(' ', $fieldAttributes);
+        }, $this->formatRules()->toArray());
+        
+        return (object) $attributes;
     }
 
     public function formatRules()

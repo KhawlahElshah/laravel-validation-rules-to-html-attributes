@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CustomFormRequest extends FormRequest
+class WithHtmlAttributesFormRequest extends FormRequest
 {
     use WithHtmlAttributes;
     
